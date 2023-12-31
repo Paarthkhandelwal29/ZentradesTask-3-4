@@ -1,0 +1,241 @@
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-family: 'Open Sans', sans-serif;
+        }
+    
+        .container {
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+          background-color: #E7E7E7;
+        }
+    
+        .content {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          padding: 20px;
+        }
+    
+        .content h2 {
+          font-size: 24px;
+          font-weight: normal;
+          color: #333;
+          margin-bottom: 20px;
+        }
+    
+        .content .cards {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr); /* 4 columns */
+          grid-template-rows: repeat(2, 1fr); /* 2 rows */
+          flex-wrap: wrap;
+          gap: 20px;
+          margin-bottom: 20px;
+        }
+    
+        .content .card {
+          /* width: 200px; */
+          height: 100px;
+          background-color: #ffffff;
+          display: flex;
+          flex-direction: column-reverse;
+          flex-grow: 1;
+          justify-content: space-around;
+          align-items: start;
+          position: relative;
+          box-shadow:  2px 2px 5px rgba(0, 0, 0, 0.3);;
+        }
+    
+        .content .card h3 {
+          font-size: 18px;
+          padding-left: 35px;
+          font-weight: normal;
+          color: #333;
+          margin-bottom: 5px;
+        }
+    
+        .content .card p {
+          font-size: 30px;
+          padding-left: 35px;
+          color: #333;
+        }
+    
+        .content .card::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 10px;
+          height: 100%;
+          background-color: #41BF99;
+        }
+    
+        .content .card.outstanding::before {
+          background-color: #FF5556;
+        }
+    
+        .content .charts {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+    
+        .content .chart {
+          width: 500px;
+          height: 387px;
+          padding: 10px;
+          flex-grow: 1;
+        }
+    
+        .content .chart h3 {
+          font-size: 18px;
+          font-weight: normal;
+          color: #333;
+          margin-bottom: 10px;
+        }
+    
+        .content .chart canvas {
+          width: 80px;
+          height: 80px;
+          background-color: #ffffff;
+        }
+    
+        @media (max-width: 768px) {
+          .content .cards {
+            justify-content: center;
+          }
+    
+          .content .card {
+            width: 150px;
+            height: 80px;
+          }
+    
+          .content .charts {
+            justify-content: center;
+          }
+    
+          .content .chart {
+            width: 400px;
+            height: 250px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="content">
+          <h2><b>Company Metrics</b></h2>
+          <div class="cards">
+            <div class="card">
+              <h3>Total Revenue</h3>
+              <p>$406,411.29</p>
+            </div>
+            <div class="card">
+              <h3>Total Jobs Avg</h3>
+              <p>$620</p>
+            </div>
+            <div class="card">
+              <h3>Tickets Created</h3>
+              <p>655</p>
+            </div>
+            <div class="card">
+              <h3>Tickets Scheduled</h3>
+              <p>735</p>
+            </div>
+            <div class="card outstanding">
+              <h3>Outstanding Amount</h3>
+              <p>$110,448.8</p>
+            </div>
+            <div class="card">
+              <h3>Memberships Sold</h3>
+              <p>105</p>
+            </div>
+            <div class="card">
+              <h3>Jobs Completed</h3>
+              <p>436</p>
+            </div>
+            <div class="card">
+              <h3>Total Canceled</h3>
+              <p>65</p>
+            </div>
+          </div>
+          <div class="charts">
+            <div class="chart">
+              <h3><b>Revenue by Job Location</b></h3>
+              <canvas id="locationChart"></canvas>
+            </div>
+            <div class="chart">
+              <h3><b>Revenue by Job Type</b></h3>
+              <canvas id="typeChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script>
+    // Get the chart elements
+    const locationChart = document.getElementById("locationChart").getContext("2d");
+    const typeChart = document.getElementById("typeChart").getContext("2d");
+
+    // Create the chart data
+    const locationData = {
+      labels: ["Everett", "Seattle", "Lynnwood", "Bothell", "Mukilteo", "Edmonds"],
+      datasets: [{
+        label: "Revenue",
+        data: [125000, 75000, 50000, 40000, 30000, 25000],
+        backgroundColor: "#41BF99",
+        borderColor: "#41BF99",
+        borderWidth: 1
+      }]
+    };
+
+    const typeData = {
+      labels: ["Service Plumbing", "Bid Work HVACR", "Service HVACR", "Bid Work Plumbing", "HWT Replacement", "Maintenance", "Material Sales"],
+      datasets: [{
+        label: "Revenue",
+        data: [100000, 80000, 60000, 50000, 40000, 30000, 20000],
+        backgroundColor: "#41BF99",
+        borderColor: "#41BF99",
+        borderWidth: 1
+      }]
+    };
+
+    // Create the chart options
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      indexAxis: 'y'
+    };
+
+    // Create the chart objects
+    const locationChartObj = new Chart(locationChart, {
+      type: "bar",
+      data: locationData,
+      options: chartOptions
+    });
+
+    const typeChartObj = new Chart(typeChart, {
+      type: "bar",
+      data: typeData,
+      options: chartOptions
+    });
+  </script>
+</body>
+</html>
